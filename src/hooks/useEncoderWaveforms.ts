@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { EdgeInfo, EdgeWithChannel, EncoderWaveforms, WaveformData } from '../types/encoder';
+import type { Direction, EdgeInfo, EdgeWithChannel, EncoderWaveforms, WaveformData } from '../types/encoder';
 
 /**
  * Generates a square wave with specified parameters
@@ -45,18 +45,56 @@ function generateSquareWave(
 }
 
 /**
- * Generates encoder waveforms with the specified phase difference
+ * Determines rotation direction based on speed
  */
-function generateEncoderWaveforms(phaseDifference: number = 90): EncoderWaveforms {
+function getDirection(speed: number): Direction {
+  if (speed > 0) return 'forward';
+  if (speed < 0) return 'reverse';
+  return 'stopped';
+}
+
+/**
+ * Generates encoder waveforms based on motor speed (rotations per second)
+ * Positive speed = forward rotation (Channel A leads Channel B)
+ * Negative speed = reverse rotation (Channel B leads Channel A)
+ */
+function generateEncoderWaveforms(speed: number = 0): EncoderWaveforms {
   const duration = 0.1; // 100ms of data
-  const frequency = 1800; // 180 pulses per rotation at 10 rotations/sec
+  const pulsesPerRotation = 180; // NXT motor encoder specification
   const dutyCycle = 0.45; // 45% duty cycle (realistic NXT motor)
+  const quadraturePhase = 90; // 90° phase offset for quadrature encoding
 
-  // Generate Channel A (reference)
-  const channelA = generateSquareWave(duration, frequency, dutyCycle, 0);
+  // Calculate frequency based on speed
+  const frequency = Math.abs(speed) * pulsesPerRotation;
+  const direction = getDirection(speed);
 
-  // Generate Channel B with phase offset
-  const channelB = generateSquareWave(duration, frequency, dutyCycle, phaseDifference);
+  // For zero speed, generate flat lines
+  if (frequency === 0) {
+    const time = [0, duration];
+    const signal = [0, 0];
+    const channelA: WaveformData = { time, signal, edges: [] };
+    const channelB: WaveformData = { time, signal, edges: [] };
+
+    return {
+      channelA,
+      channelB,
+      edges: [],
+      frequency,
+      duration,
+      speed,
+      direction,
+    };
+  }
+
+  // Determine phase relationship based on direction
+  // Forward: Channel A leads (B is delayed by 90°)
+  // Reverse: Channel B leads (A is delayed by 90°)
+  const phaseA = direction === 'forward' ? 0 : quadraturePhase;
+  const phaseB = direction === 'forward' ? quadraturePhase : 0;
+
+  // Generate Channel A and Channel B
+  const channelA = generateSquareWave(duration, frequency, dutyCycle, phaseA);
+  const channelB = generateSquareWave(duration, frequency, dutyCycle, phaseB);
 
   // Combine all edges and sort by time
   const allEdges: EdgeWithChannel[] = [
@@ -77,15 +115,17 @@ function generateEncoderWaveforms(phaseDifference: number = 90): EncoderWaveform
     edges: edgesWithDeltas,
     frequency,
     duration,
+    speed,
+    direction,
   };
 }
 
 /**
- * Hook to generate encoder waveforms based on phase difference
+ * Hook to generate encoder waveforms based on motor speed
  * Memoizes the result to avoid unnecessary recalculations
  */
-export function useEncoderWaveforms(phaseDifference: number): EncoderWaveforms {
-  return useMemo(() => generateEncoderWaveforms(phaseDifference), [phaseDifference]);
+export function useEncoderWaveforms(speed: number): EncoderWaveforms {
+  return useMemo(() => generateEncoderWaveforms(speed), [speed]);
 }
 
 /**
