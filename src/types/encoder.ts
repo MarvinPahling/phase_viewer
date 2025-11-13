@@ -2,6 +2,8 @@
  * Type definitions for encoder waveform visualization
  */
 
+export type Direction = 'forward' | 'reverse' | 'stopped';
+
 export interface EdgeInfo {
   time: number;
   type: 'rising' | 'falling';
@@ -25,4 +27,6 @@ export interface EncoderWaveforms {
   edges: EdgeWithChannel[];
   frequency: number;
   duration: number;
+  speed: number;
+  direction: Direction;
 }
