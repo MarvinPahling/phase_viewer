@@ -1,10 +1,5 @@
 import { useMemo } from 'react';
-import type {
-  EdgeInfo,
-  EdgeWithChannel,
-  WaveformData,
-  EncoderWaveforms,
-} from '../types/encoder';
+import type { EdgeInfo, EdgeWithChannel, EncoderWaveforms, WaveformData } from '../types/encoder';
 
 /**
  * Generates a square wave with specified parameters
@@ -90,10 +85,7 @@ function generateEncoderWaveforms(phaseDifference: number = 90): EncoderWaveform
  * Memoizes the result to avoid unnecessary recalculations
  */
 export function useEncoderWaveforms(phaseDifference: number): EncoderWaveforms {
-  return useMemo(
-    () => generateEncoderWaveforms(phaseDifference),
-    [phaseDifference]
-  );
+  return useMemo(() => generateEncoderWaveforms(phaseDifference), [phaseDifference]);
 }
 
 /**

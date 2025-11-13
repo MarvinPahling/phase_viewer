@@ -4,11 +4,7 @@ interface PhaseControlProps {
   frequency: number;
 }
 
-export function PhaseControl({
-  phaseDifference,
-  onPhaseChange,
-  frequency,
-}: PhaseControlProps) {
+export function PhaseControl({ phaseDifference, onPhaseChange, frequency }: PhaseControlProps) {
   return (
     <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
       <div className="mb-6">

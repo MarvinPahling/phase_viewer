@@ -47,8 +47,8 @@ export interface PlotlyLayout {
     bordercolor: string;
     borderwidth: number;
   };
-  shapes: any[];
-  annotations: any[];
+  shapes: unknown[];
+  annotations: unknown[];
   hovermode: string;
   margin: { t: number; b: number; l: number; r: number };
 }
@@ -101,8 +101,7 @@ export function usePlotlyConfig(waveformData: EncoderWaveforms) {
         y0: -1,
         y1: 4,
         line: {
-          color:
-            edge.channel === 'A' ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 165, 0, 0.3)',
+          color: edge.channel === 'A' ? 'rgba(0, 255, 0, 0.3)' : 'rgba(255, 165, 0, 0.3)',
           width: 1,
           dash: 'dot',
         },
@@ -113,8 +112,7 @@ export function usePlotlyConfig(waveformData: EncoderWaveforms) {
       .filter((edge) => edge.delta !== null && edge.time <= fiveCyclesDuration * 2)
       .slice(0, 40)
       .map((edge) => {
-        const prevEdge =
-          waveformData.edges[waveformData.edges.indexOf(edge) - 1];
+        const prevEdge = waveformData.edges[waveformData.edges.indexOf(edge) - 1];
         if (!prevEdge) return null;
 
         const yPos = edge.channel === 'A' ? 3.3 : -0.3;
@@ -142,8 +140,7 @@ export function usePlotlyConfig(waveformData: EncoderWaveforms) {
       .filter((edge) => edge.delta !== null && edge.time <= fiveCyclesDuration * 2)
       .slice(0, 40)
       .map((edge) => {
-        const prevEdge =
-          waveformData.edges[waveformData.edges.indexOf(edge) - 1];
+        const prevEdge = waveformData.edges[waveformData.edges.indexOf(edge) - 1];
         if (!prevEdge) return null;
 
         const midTime = (prevEdge.time + edge.time) / 2;

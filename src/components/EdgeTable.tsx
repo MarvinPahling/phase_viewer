@@ -1,5 +1,5 @@
-import type { EdgeWithChannel } from '../types/encoder';
 import { formatTimeDelta } from '../hooks/useEncoderWaveforms';
+import type { EdgeWithChannel } from '../types/encoder';
 
 interface EdgeTableProps {
   edges: EdgeWithChannel[];
@@ -34,13 +34,11 @@ export function EdgeTable({ edges }: EdgeTableProps) {
         <tbody>
           {edges.slice(0, 10).map((edge, idx) => (
             <tr
-              key={idx}
+              key={`${edge.time}-${edge.channel}`}
               className="border-b border-white/10 transition-colors hover:bg-white/5"
             >
               <td className="p-3 text-gray-400 font-bold">{idx + 1}</td>
-              <td className="p-3 text-gray-300">
-                {(edge.time * 1e6).toFixed(2)} μs
-              </td>
+              <td className="p-3 text-gray-300">{(edge.time * 1e6).toFixed(2)} μs</td>
               <td
                 className="p-3 font-bold"
                 style={{ color: edge.channel === 'A' ? '#00ff00' : '#ffa500' }}

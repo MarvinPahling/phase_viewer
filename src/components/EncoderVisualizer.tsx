@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useEncoderWaveforms } from '../hooks/useEncoderWaveforms';
 import { usePlotlyConfig } from '../hooks/usePlotlyConfig';
+import { EdgeTable } from './EdgeTable';
+import { Legend } from './Legend';
 import { PhaseControl } from './PhaseControl';
 import { WaveformChart } from './WaveformChart';
-import { Legend } from './Legend';
-import { EdgeTable } from './EdgeTable';
 
 export function EncoderVisualizer() {
   const [phaseDifference, setPhaseDifference] = useState(90);
@@ -22,8 +22,7 @@ export function EncoderVisualizer() {
           NXT Motor Quadrature Encoder Visualizer
         </h1>
         <p className="text-base text-gray-400">
-          Simulates the two-channel encoder output with 180 pulses per rotation and
-          ~45% duty cycle
+          Simulates the two-channel encoder output with 180 pulses per rotation and ~45% duty cycle
         </p>
       </div>
 
