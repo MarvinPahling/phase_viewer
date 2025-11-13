@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import type { Data, Layout } from 'plotly.js';
+import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import type { EdgeWithChannel } from '../types/encoder';
 
@@ -119,7 +119,12 @@ export function DeltaChart({ edges }: DeltaChartProps) {
 
   return (
     <div className="bg-black/50 border border-white/10 rounded-lg p-4 mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-      <Plot data={data} layout={layout} config={config} style={{ width: '100%', height: '400px' }} />
+      <Plot
+        data={data}
+        layout={layout}
+        config={config}
+        style={{ width: '100%', height: '400px' }}
+      />
     </div>
   );
 }

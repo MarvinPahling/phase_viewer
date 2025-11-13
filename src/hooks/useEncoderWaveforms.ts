@@ -1,5 +1,11 @@
 import { useMemo } from 'react';
-import type { Direction, EdgeInfo, EdgeWithChannel, EncoderWaveforms, WaveformData } from '../types/encoder';
+import type {
+  Direction,
+  EdgeInfo,
+  EdgeWithChannel,
+  EncoderWaveforms,
+  WaveformData,
+} from '../types/encoder';
 
 /**
  * Generates a square wave with specified parameters

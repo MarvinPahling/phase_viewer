@@ -34,8 +34,7 @@ export function SpeedControl({ speed, onSpeedChange, frequency, direction }: Spe
     <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
       <div className="mb-6">
         <label htmlFor="speed-slider" className="block text-lg mb-2 text-white">
-          Motor Speed:{' '}
-          <span className="text-neon-green font-bold text-xl">{speed.toFixed(1)}</span>
+          Motor Speed: <span className="text-neon-green font-bold text-xl">{speed.toFixed(1)}</span>
           <span className="text-gray-400 text-base ml-1">rot/s</span>
         </label>
         <input
