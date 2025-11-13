@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useEncoderWaveforms } from '../hooks/useEncoderWaveforms';
 import { usePlotlyConfig } from '../hooks/usePlotlyConfig';
+import { DeltaChart } from './DeltaChart';
 import { EdgeTable } from './EdgeTable';
 import { Legend } from './Legend';
-import { PhaseControl } from './PhaseControl';
+import { SpeedControl } from './SpeedControl';
 import { WaveformChart } from './WaveformChart';
 
 export function EncoderVisualizer() {
-  const [phaseDifference, setPhaseDifference] = useState(90);
+  const [speed, setSpeed] = useState(5); // Start at 5 rotations/sec
 
-  // Generate waveform data based on phase difference
-  const waveformData = useEncoderWaveforms(phaseDifference);
+  // Generate waveform data based on motor speed
+  const waveformData = useEncoderWaveforms(speed);
 
   // Generate Plotly configuration
   const { traces, layout, config } = usePlotlyConfig(waveformData);
@@ -26,13 +27,16 @@ export function EncoderVisualizer() {
         </p>
       </div>
 
-      <PhaseControl
-        phaseDifference={phaseDifference}
-        onPhaseChange={setPhaseDifference}
+      <SpeedControl
+        speed={speed}
+        onSpeedChange={setSpeed}
         frequency={waveformData.frequency}
+        direction={waveformData.direction}
       />
 
       <WaveformChart traces={traces} layout={layout} config={config} />
+
+      <DeltaChart edges={waveformData.edges} />
 
       <Legend />
 
